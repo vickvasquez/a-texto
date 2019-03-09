@@ -20,5 +20,4 @@ describe('Api atexto', () => {
       });
     });
   });
-
 });
