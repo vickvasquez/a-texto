@@ -1,17 +1,5 @@
-import Koa from 'koa';
 
 import './lib/mongoose';
-const app = new Koa();
+import app from './app';
 
-const PORT = process.env.PORT || 3000;
-
-app.use(ctx => {
-  ctx.body = {};
-});
-
-const server = app.listen(PORT, () => {
-  console.log('Server runnig '+ PORT);
-});
-
-module.exports = server;	
-
+module.exports = app;

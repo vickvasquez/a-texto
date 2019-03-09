@@ -19,5 +19,21 @@ describe('Api atexto', () => {
         done();
       });
     });
+    it('shoud add new record', done => {
+      chai.request(server)
+        .post('/api/add')
+        .send({
+          name: 'Test record',
+          file: 'url file'
+        })
+        .end((err, res) => {
+          should.not.exist(err)
+          res.status.should.equal(200)
+          res.type.should.equal('application/json')
+          res.body.should.include.keys('data')
+          res.body.data.should.include.keys('_id', 'name', 'file', 'created_at', 'updated_at')
+          done()
+        })
+    })
   });
 });
