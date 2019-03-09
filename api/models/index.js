@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const recordsSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  file: { type: String, required: true },
+  name: { type: String, required: 'El nombre del archivo es obligatorio' },
+  file: { type: String, required: 'Sucedió un error al subir la grabación' },
 }, {
   timestamps: {
     createdAt: 'created_at',

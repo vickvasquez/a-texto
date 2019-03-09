@@ -13,5 +13,6 @@ router.get('/', async ctx => {
 })
 
 router.post('/api/add', controllers.add)
+router.put('/api/edit/:id', controllers.update)
 
 export default router;
