@@ -8,11 +8,13 @@ router.get('/', async ctx => {
   ctx.body = {
     status: 'success',
     statusCode: 200,
-    message: 'APi records'
+    message: 'APi recordings'
   };
 })
 
-router.post('/api/add', controllers.add)
-router.put('/api/edit/:id', controllers.update)
+router.get('/api/recordings', controllers.getAll)
+router.post('/api/recordings', controllers.add)
+router.put('/api/recordings/:id', controllers.update)
+router.delete('/api/recordings/:id', controllers.remove)
 
 export default router;
