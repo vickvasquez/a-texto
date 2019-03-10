@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    [
+      "babel-plugin-react-css-modules",
+      {
+        "generateScopedName": "[hash:base64:6]",
+        "attributeNames": {
+            "activeStyleName": "activeClassName"
+        },
+        "exclude": "node_modules",
+        "webpackHotModuleReloading": true
+      }
+    ],
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "presets": [
+    "@babel/preset-react",
+    "@babel/preset-env"
+  ]
+}

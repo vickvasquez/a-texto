@@ -2,15 +2,24 @@ import request from 'superagent';
 
 import config from '../config';
 
-const reqServer = async function(type, data = {}, endpoint) {
+function handleError(error) {
+  const { body } = error;
+  const { message, status } = body;
+
+  return {
+    errors: body.errors,
+    message,
+  };
+}
+
+const reqServer = async function reqServer(type, data = {}, endpoint) {
   const {
     attach,
     headers,
     ...rest
   } = data;
 
-  const params = { ...rest
-  };
+  const params = { ...rest };
 
   const req = request(type, config.apiHost + endpoint);
 
@@ -36,15 +45,23 @@ const reqServer = async function(type, data = {}, endpoint) {
     req.send(params);
   }
 
-  const response = await req;
-  console.log(response);
-}
+  try {
+    const { body } = await req;
+    const { errors } = body;
+
+    return body;
+  } catch (err) {
+    const resp = JSON.parse(JSON.stringify(err));
+    const error = handleError(resp.response);
+    throw error;
+  }
+};
 
 
-export const post = (endpoint, data) => reqServer('POST', data, endpoint)
+export const post = (endpoint, data) => reqServer('POST', data, endpoint);
 
-export const put = (endpoint, data) => reqServer('PUT', data, endpoint)
+export const put = (endpoint, data) => reqServer('PUT', data, endpoint);
 
-export const get = (endpoint, data) => reqServer('GET', data, endpoint)
+export const get = (endpoint, data) => reqServer('GET', data, endpoint);
 
-export const del = (endpoint, data) => reqServer('DELETE', data, endpoint)
+export const del = (endpoint, data) => reqServer('DELETE', data, endpoint);
