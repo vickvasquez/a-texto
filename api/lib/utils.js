@@ -1,4 +1,4 @@
-export default ({ errors }) => {
+export const formatError = ({ errors }) => {
   if (!errors) return {}
   let arrError = [];
   Object.keys(errors).forEach(error => {
@@ -6,3 +6,5 @@ export default ({ errors }) => {
   })
   return arrError;
 }
+
+export const allowedExtensions = ['.mp3', '.avi', '.json'];

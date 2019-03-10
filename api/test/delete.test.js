@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import cleanDB from '../utils';
+import { validFile, contentType } from './fixtures/recordings';
 const server = require('../server');
 
 chai.use(chaiHttp);
@@ -21,14 +22,12 @@ describe('Delete', () => {
     expect(res.body.data).to.be.an('object')
     expect(res.body.data.deleted).to.be.eq(0)
   })
-  
+
   it('should delete recording', async () => {
     const prevData = await await request(server)
       .post('/api/recordings')
-      .send({
-        name: 'Test record',
-        file: 'url file'
-      })
+      .set('Content-Type', contentType)
+      .send(validFile)
 
     const { body: { data: { _id } } } = prevData;
 

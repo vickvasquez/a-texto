@@ -1,11 +1,11 @@
 import Records from '../models';
 
-import formatError from '../lib/formatErrors';
+import { formatError } from '../lib/utils';
 class RecordsController {
   async getAll(ctx) {
     try {
       const data = await Records.find();
-      ctx.body = {
+      return ctx.body = {
         status: 'success',
         data
       };

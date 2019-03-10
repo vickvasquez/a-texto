@@ -4,6 +4,8 @@ import chaiHttp from 'chai-http';
 import cleanDB from '../utils';
 const server = require('../server');
 
+import { validFile, contentType } from './fixtures/recordings';
+
 chai.use(chaiHttp);
 const { expect, request } = chai;
 
@@ -11,7 +13,7 @@ describe('Edit', () => {
   beforeEach(async () => {
     await cleanDB()
   })
-  
+
   it('should return error if id is invalid', async () => {
     const res = await request(server)
       .put('/api/recordings/0')
@@ -39,10 +41,8 @@ describe('Edit', () => {
   it('should update recording', async() => {
     const prevData = await await request(server)
       .post('/api/recordings')
-      .send({
-        name: 'Test record',
-        file: 'url file'
-      })
+      .set('Content-Type', contentType)
+      .send(validFile)
 
     const { body: { data: { _id, name } } } = prevData;
 

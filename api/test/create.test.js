@@ -1,9 +1,10 @@
-process.env.NODE_ENV = 'test';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import cleanDB from '../utils';
 const server = require('../server');
+
+import { validFile, invalidFile, contentType } from './fixtures/recordings';
 
 chai.use(chaiHttp);
 const { expect, request } = chai;
@@ -58,18 +59,29 @@ describe('Add /', () => {
     expect(res.body.errors[0].message).to.equal('Sucedió un error al subir la grabación')
   })
 
+  it('shoud return error if file is invalid', async () => {
+    const res = await request(server)
+      .post('/api/recordings')
+      .set('Content-Type', contentType)
+      .send(invalidFile)
+
+      expect(res.status).to.equal(400)
+      expect(res.body.status).to.equal('error')
+      expect(res.body.errors).to.be.an('array')
+      expect(res.body.errors[0]).to.have.key('path', 'message')
+      expect(res.body.errors[0].path).to.equal('file')
+      expect(res.body.errors[0].message).to.equal('Formato de archivo incorrecto')
+  })
+
   it('shoud add new recording', async () => {
     const res = await request(server)
       .post('/api/recordings')
-      .send({
-        name: 'Test record',
-        file: 'url file'
-      })
-
-      expect(res.status).to.equal(200)
-      expect(res.type).to.equal('application/json')
-      expect(res.body).to.deep.property('data')
-      expect(res.body.data).to.have.any.keys('_id', 'name', 'file', 'created_at', 'updated_at')
+      .set('Content-Type', contentType)
+      .send(validFile)
+    expect(res.status).to.equal(200)
+    expect(res.type).to.equal('application/json')
+    expect(res.body).to.deep.property('data')
+    expect(res.body.data).to.have.any.keys('_id', 'name', 'file', 'created_at', 'updated_at')
   })
 
   it('should return empty recording list', async () => {
@@ -87,17 +99,13 @@ describe('Add /', () => {
   it('should return recording list', async () => {
     await request(server)
       .post('/api/recordings')
-      .send({
-        name: 'Recording 1',
-        file: 'url record 1'
-      })
+      .set('Content-Type', contentType)
+      .send(validFile)
     
       await request(server)
       .post('/api/recordings')
-      .send({
-        name: 'Recording 2',
-        file: 'url file'
-      })
+      .set('Content-Type', contentType)
+      .send(validFile)
 
     const res = await request(server)
       .get('/api/recordings')
