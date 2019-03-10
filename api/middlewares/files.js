@@ -5,6 +5,12 @@ import uid from 'uid';
 import { formatError, allowedExtensions } from '../lib/utils';
 
 export const files = async (ctx, next) => {
+  const { method, url } = ctx.request;
+
+  if (method !== 'POST' && url !== '/api/recordings') {
+    return await next();
+  }
+
   if (!ctx.request.files) {
     return await next();
   }
@@ -16,9 +22,8 @@ export const files = async (ctx, next) => {
   }
 
   const file = ctx.request.files.file || {};
-  const ext = path.extname(file.name);
-
-  if (!allowedExtensions.includes(ext)) {
+  const ext = file.name && path.extname(file.name);
+  if (file.name && !allowedExtensions.includes(ext)) {
     ctx.status = 400;
     ctx.body = {
       status: 'error',

@@ -4,3 +4,7 @@
 ```
 make server-dev
 ```
+## Run server tests
+```
+make test-api
+```
