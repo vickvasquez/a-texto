@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-const App = () => (<h1>A texto</h1>);
+// eslint-disable-next-line
+import App from '~pages/App';
 
 render(<App />, document.getElementById('app'));

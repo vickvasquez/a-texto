@@ -1,2 +1,2 @@
-import api from './routes';
-export default api;
+export { default } from './routes';
+
