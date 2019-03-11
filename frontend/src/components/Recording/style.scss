@@ -1,0 +1,33 @@
+.microphone {
+  background: rgba(0,0,0,.3);
+  border-radius: 50%;
+  margin: 0 auto;
+  height: 200px;
+  position: relative;
+  width: 200px;
+
+  .inner-microphone {
+    transition: transform .2s linear;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f03;
+    border-radius: inherit;
+    color: white;
+    left: 27px;
+    top: 27px;
+    height: 147px;
+    position: relative;
+    width: 147px;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}

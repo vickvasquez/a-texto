@@ -1,6 +1,8 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const generateScopedName = require('../src/lib/generatedScopedName');
+const autoprefixer = require('autoprefixer');
 
 const plugins = [
   new MiniCssExtractPlugin({
@@ -21,6 +23,22 @@ module.exports = {
         exclude: /(node_modules)/,
         use: [{
           loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            plugins: [
+              [
+                'react-css-modules',
+                {
+                  filetypes: {
+                    '.scss': {
+                      syntax: 'postcss-scss',
+                    },
+                  },
+                  generateScopedName,
+                },
+              ],
+            ],
+          },
         }, {
           loader: 'eslint-loader',
         }],
@@ -33,14 +51,24 @@ module.exports = {
           options: {
             modules: true,
             minimize: true,
-            localIdentName: '[hash:base64:6]',
+            getLocalIdent: (context, localIdentName, localName) =>
+              generateScopedName(localName, context.resourcePath),
           }
         }, {
-          loader: 'sass-loader',
+          loader: 'sass-loader?!css-loader',
           options: {
+            outputStyle: 'expanded',
+            import: true,
             includePaths: ['./src/styles']
               .map(file => path.join(__dirname, file))
           }
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            plugins: () => [
+              autoprefixer,
+            ],
+          },
         }]
       }, {
         test: /\.(eot|ttf|woff|woff2)$/,
@@ -60,6 +88,13 @@ module.exports = {
         }, {
           loader: 'image-webpack-loader',
           options: {
+            pngquant: {
+              quality: '65-90',
+              speed: 4,
+            },
+            mozjpeg: {
+              quality: 60,
+            },
             bypassOnDebug: true,
           },
         }, ],

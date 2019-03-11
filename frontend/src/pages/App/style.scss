@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  background: #F3F4F4;
+  position: relative;
+  min-height: 100vh;
+
+  .container-app {
+    margin: 0 auto;
+    max-width: 70%;
+  }
+
+  .container-microphone {
+    text-align: center;
+    position: relative;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 9px 0 rgba(0,0,0,0.05);
+    margin: 0 auto;
+    max-width: 500px;
+    padding: 2rem 0;
+    top: 20vh;
+  }
+}

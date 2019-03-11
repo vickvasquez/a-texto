@@ -3,7 +3,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const generateScopedName = require('./lib/generateScopedName')
+const generateScopedName = require('../src/lib/generatedScopedName');
+const autoprefixer = require('autoprefixer');
 
 const plugins = [
   new MiniCssExtractPlugin({
@@ -15,7 +16,7 @@ const plugins = [
     verbose: true
   }),
   new HtmlWebpackPlugin({
-    template: path.resolve('./public/index.html'),
+    template: path.resolve('./frontend/public/index.html'),
     inject: true,
     minify: {
       collapseWhitespace: true,
@@ -31,7 +32,7 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
           discardComments: {
-            removeAll: true
+            removeAll: true,
           },
           safe: true,
         }
@@ -41,6 +42,14 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all',
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
+        }
+      }
     }
   },
   module: {
@@ -49,6 +58,22 @@ module.exports = {
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            plugins: [
+              [
+                'react-css-modules',
+                {
+                  filetypes: {
+                    '.scss': {
+                      syntax: 'postcss-scss',
+                    },
+                  },
+                  generateScopedName,
+                },
+              ],
+            ],
+          },
         }
       }, {
         test: /\.(s?css)$/,
@@ -59,11 +84,14 @@ module.exports = {
           options: {
             modules: true,
             minimize: true,
-            localIdentName: '[hash:base64:6]',
+            getLocalIdent: (context, localIdentName, localName) =>
+              generateScopedName(localName, context.resourcePath),
           }
         }, {
-          loader: 'sass-loader',
+          loader: 'sass-loader?!css-loader',
           options: {
+            outputStyle: 'expanded',
+            import: true,
             includePaths: ['./src/styles']
               .map(file => path.join(__dirname, file))
           }
@@ -102,6 +130,7 @@ module.exports = {
     alias: {
       '~components': path.resolve(__dirname, '../src/components'),
       '~pages': path.resolve(__dirname, '../src/pages'),
+      '~api': path.resolve(__dirname, '../src/api/'),
     },
     extensions: ['.js'],
   },
