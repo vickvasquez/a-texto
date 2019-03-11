@@ -1,0 +1,63 @@
+.container-add {
+  text-align: center;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.05);
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 2rem 0;
+  top: 20vh;
+
+  .header {
+    margin-bottom: 4rem;
+    font-weight: 100;
+    font-size: 18px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+  }
+
+  .time-elapse {
+    margin-top: 4rem;
+    font-weight: 100;
+    font-size: 2.2rem;
+    letter-spacing: 4px;
+  }
+}
+
+.button {
+  display: inline-block;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 10px;
+  outline: 0;
+  border: 1px solid transparent;
+  background-image: none;
+  cursor: pointer;
+  padding: 0 20px;
+  min-width: 100px;
+  height: 50px;
+  vertical-align: middle;
+  text-align: center;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 300;
+  touch-action: manipulation;
+  box-sizing: border-box;
+  border-radius: 5px;
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.1);
+
+  &.unstyled {
+    color: black;
+    background: transparent;
+  }
+
+  &.primary {
+    background: red
+  }
+}
