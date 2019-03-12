@@ -1,0 +1,23 @@
+.container-table {
+  background: white;
+  padding: 1rem;
+
+  table {
+    border-collapse: collapse;
+    td {
+      color: #3b3f3b;
+      padding: .8rem;
+      border: 1px solid #ccc;
+    }
+  }
+  .button-action {
+    border: 0;
+    background: transparent;
+    outline: 0;
+    cursor: pointer;
+
+    img {
+      width: 15px;
+    }
+  }
+}

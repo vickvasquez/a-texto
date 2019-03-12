@@ -55,8 +55,8 @@ class App extends Component {
     const { file, filename } = this.state;
     try {
       this.setState({ loading: true });
-      const body = await api.add({ file, name: filename });
-      this.setState({ loading: false });
+      await api.add({ file, name: filename });
+      this.setState({ loading: false, showModal: false });
     } catch (err) {
       this.setState({ loading: false });
     }
