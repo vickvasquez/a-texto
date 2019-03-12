@@ -1,1 +1,1 @@
-export default from './Recordings';
+export default from './Recording';

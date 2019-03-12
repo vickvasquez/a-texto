@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import api from '~api';
 
-import { Microphone } from '~components';
+import { Microphone, Animation, Modal, ModalHeader, ModalBody, ModalFooter } from '~components';
 
 import './style.scss';
 
@@ -13,6 +13,9 @@ const initialState = {
   icon: 'microphone',
   timingElapse: 0,
   audioUrl: '',
+  showModal: false,
+  filename: '',
+  loading: false,
 };
 
 class App extends Component {
@@ -25,7 +28,7 @@ class App extends Component {
 
     this.audioChunks = [];
     this.mediaRecorder = null;
-    this.idTime
+    this.idTime = 0;
   }
 
   onDataAvailable = ({ data }) => {
@@ -39,11 +42,24 @@ class App extends Component {
     });
   }
 
-  onSubmit = async () => {
-    const { file } = this.state;
+  onSave = () => {
+    this.setState({ showModal: true });
+  }
+
+  onCloseModal = () => {
+    this.setState({ showModal: false });
+  }
+
+  onSubmit = async (evt) => {
+    evt.preventDefault();
+    const { file, filename } = this.state;
     try {
-      const body= await api.add({ file, name: 'Testing' });
-    } catch (err) {}
+      this.setState({ loading: true });
+      const body = await api.add({ file, name: filename });
+      this.setState({ loading: false });
+    } catch (err) {
+      this.setState({ loading: false });
+    }
   }
 
   onStopRecording = () => {
@@ -59,6 +75,10 @@ class App extends Component {
       this.setState({ isPlaying: true });
       audio.play();
     }
+  }
+
+  onChangeName = ({ currentTarget: { value } }) => {
+    this.setState({ filename: value });
   }
 
   hasGetUserMedia = () => !!(
@@ -107,7 +127,7 @@ class App extends Component {
   }
 
   render() {
-    const { hasError, icon, timingElapse, nextAction, file } = this.state;
+    const { hasError, icon, timingElapse, nextAction, file, showModal, filename, loading } = this.state;
 
     return (
       <div styleName="container-add">
@@ -121,9 +141,30 @@ class App extends Component {
         {file && (
           <div styleName="footer">
             <button type="button" styleName="button unstyled" onClick={this.onDiscard}> Descartar </button>
-            <button type="button" styleName="button primary"> Guardar </button>
+            <button type="button" styleName="button primary" onClick={this.onSave}> Guardar </button>
           </div>
         )}
+        <Animation>
+          {showModal && (
+            <Modal loading={loading}>
+              <ModalHeader onClose={this.onCloseModal}>
+                <h4 styleName="title-modal ">Guardar grabación</h4>
+              </ModalHeader>
+              <ModalBody>
+                <form onSubmit={this.onSubmit}>
+                  <p styleName="label">Nombre del audio.</p>
+                  <input disabled={loading} type="text" name="filename" required="required" onChange={this.onChangeName} />
+                </form>
+              </ModalBody>
+              <ModalFooter>
+                <div styleName="footer-modal">
+                  <input type="button" styleName="button unstyled" value="Cancelar" onClick={this.onCloseModal} />
+                  <input type="button" styleName="button primary" value="Confirmar" disabled={!filename.length || loading} onClick={this.onSubmit} />
+                </div>
+              </ModalFooter>
+            </Modal>
+          )}
+        </Animation>
       </div>
     );
   }
