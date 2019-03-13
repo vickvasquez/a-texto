@@ -1,6 +1,23 @@
 .container-table {
   background: white;
   padding: 1rem;
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.05);
+
+  .title {
+    padding: 0;
+    padding-bottom: 1rem;
+    margin-top: 0;
+    font-weight: 300;
+    color: #676c67;
+  }
+  
+  .date {
+    text-align: center;
+  }
+
+  .container-icon {
+    text-align: center;
+  }
 
   table {
     border-collapse: collapse;
@@ -13,7 +30,7 @@
     }
     td {
       color: #3b3f3b;
-      padding: .8rem;
+      padding: 0 .8rem;
       border: 1px solid #ccc;
     }
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import { Icon, Animation, Modal, ModalBody, ModalFooter } from '~components';
 import api from '~api';
@@ -74,21 +75,30 @@ class Recordings extends Component {
       label: 'Nombre',
       prop: 'name',
     },
-    {
+    /*{
       label: 'Archivo',
       prop: 'file',
-    },
+    },*/
     {
       label: 'Fecha de grabación',
       prop: 'created_at',
+      template: ({ created_at }) => <div styleName="date">{moment(created_at).format('YYYY-MM-DD HH:MM:SS')}</div>
     },
     {
       label: 'Editar',
-      template: ({ _id, name }) => (<button styleName="button-action" onClick={() => { this.onEdit(_id, name); }} type="button"><Icon type="edit" /></button>),
+      template: ({ _id, name }) => (
+        <div styleName="container-icon">
+          <button styleName="button-action" onClick={() => { this.onEdit(_id, name); }} type="button"><Icon type="edit" /></button>
+        </div>
+      ),
     },
     {
       label: 'Eliminar',
-      template: ({ _id }) => (<button styleName="button-action" onClick={() => { this.onDelete(_id); }} type="button"><Icon type="trash" /></button>),
+      template: ({ _id }) => (
+        <div styleName="container-icon">
+          <button styleName="button-action" onClick={() => { this.onDelete(_id); }} type="button"><Icon type="trash" /></button>
+        </div>
+      ),
     },
   ];
 
@@ -98,6 +108,7 @@ class Recordings extends Component {
     const columns = this.getColumns();
     return (
       <div styleName="container-table">
+        <h2 styleName="title">Tus grabaciones</h2>
         <table>
           <thead>
             <tr>
@@ -140,7 +151,7 @@ class Recordings extends Component {
               <ModalFooter>
                 <div className="footer-modal">
                   <input type="button" className="button unstyled" value="Cancelar" onClick={this.onCloseModal} />
-                  <input type="button" className="button primary" value="Confirmar" disabled={!isValid || loading} onClick={this.onSubmit} />
+                  <input type="button" className="button primary" value="Confirmar" disabled={!isValid || loading} onClick={this.edit} />
                 </div>
               </ModalFooter>
             </Modal>

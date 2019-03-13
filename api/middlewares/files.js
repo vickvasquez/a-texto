@@ -23,7 +23,8 @@ export const files = async (ctx, next) => {
 
   const file = ctx.request.files.file || {};
   const ext = file.name && path.extname(file.name);
-  /*if (file.name && allowedExtensions.includes(ext)) {
+  const name = ctx.request.body.name;
+  /*if (file.name && !allowedExtensions.includes(ext)) {
     ctx.status = 400;
     ctx.body = {
       status: 'error',
@@ -33,7 +34,7 @@ export const files = async (ctx, next) => {
     return
   }
 */
-  const filePath = path.join(tmpdir, `${uid(50)}${ext}`);
+  const filePath = path.join(tmpdir, `${name}_${uid(50)}${ext}`);
   const reader = await fs.createReadStream(file.path);
   const writer = await fs.createWriteStream(filePath);
   await reader.pipe(writer);

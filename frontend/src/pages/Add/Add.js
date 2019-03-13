@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import api from '~api';
+import diff from '../../lib/util';
 
 import { Microphone, Animation, Modal, ModalHeader, ModalBody, ModalFooter } from '~components';
 
@@ -12,11 +14,12 @@ const initialState = {
   isBlocked: false,
   file: null,
   icon: 'microphone',
-  timingElapse: 0,
+  timingElapse: '00:00',
   audioUrl: '',
   showModal: false,
   filename: '',
   loading: false,
+  timeInit: '',
 };
 
 class App extends Component {
@@ -71,7 +74,7 @@ class App extends Component {
   }
 
   onStopRecording = () => {
-    const audioBlob = new Blob(this.audioChunks);
+    const audioBlob = new Blob(this.audioChunks, { type: 'audio/ogg; codecs=opus' });
     const audioUrl = URL.createObjectURL(audioBlob);
     this.setState({ file: audioBlob, audioUrl });
   }
@@ -106,9 +109,9 @@ class App extends Component {
 
         this.mediaRecorder.addEventListener('stop', this.onStopRecording);
         this.mediaRecorder.addEventListener('dataavailable', this.onDataAvailable);
+        this.setState({ isRecording: true, icon: 'stop', nextAction: this.stopRecording, timeInit: moment() });
 
         this.tick();
-        this.setState({ isRecording: true, icon: 'stop', nextAction: this.stopRecording });
       } catch (err) {
         if (err === 'DOMException: Permission denied') {
           this.setState({ hasError: true });
@@ -129,14 +132,14 @@ class App extends Component {
   }
 
   tick = () => {
+    const { timeInit } = this.state;
     this.idTime = setInterval(() => {
-      this.setState(({ timingElapse }) => ({ timingElapse: timingElapse + 1 }));
-    }, 1000)
+      this.setState(() => ({ timingElapse: diff(timeInit) }));
+    }, 1000);
   }
 
   render() {
     const { hasError, icon, timingElapse, nextAction, file, showModal, filename, loading } = this.state;
-
     return (
       <div styleName="container-add">
         <>{hasError && <p>Denegaste el servicio de grabacion</p>}</>
@@ -145,7 +148,9 @@ class App extends Component {
           onClick={nextAction}
           icon={icon}
         />
-        <h2 styleName="time-elapse"> {timingElapse} </h2>
+        <h2 styleName="time-elapse">
+          {timingElapse}
+        </h2>
         {file && (
           <div styleName="footer">
             <button type="button" className="button unstyled" onClick={this.onDiscard}> Descartar </button>
