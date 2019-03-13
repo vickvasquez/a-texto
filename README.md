@@ -2,9 +2,9 @@
 
 ## Run development server
 ```
-make server-dev
+make start-server
 ```
-## Run server tests
+## Run frontend
 ```
-make test-api
+make start-front
 ```
