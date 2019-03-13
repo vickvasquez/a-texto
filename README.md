@@ -1,6 +1,6 @@
 ## A texto
 
-## Run development server
+## Run server
 ```
 make start-server
 ```
