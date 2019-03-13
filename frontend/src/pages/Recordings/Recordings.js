@@ -75,10 +75,10 @@ class Recordings extends Component {
       label: 'Nombre',
       prop: 'name',
     },
-    /*{
-      label: 'Archivo',
-      prop: 'file',
-    },*/
+    {
+      label: 'Duración',
+      prop: 'duration',
+    },
     {
       label: 'Fecha de grabación',
       prop: 'created_at',

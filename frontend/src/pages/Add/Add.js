@@ -20,6 +20,7 @@ const initialState = {
   filename: '',
   loading: false,
   timeInit: '',
+  isPlaying: false,
 };
 
 class App extends Component {
@@ -60,11 +61,11 @@ class App extends Component {
 
   onSubmit = async (evt) => {
     evt.preventDefault();
-    const { file, filename } = this.state;
+    const { file, filename, timingElapse } = this.state;
     const { refetch } = this.props;
     try {
       this.setState({ loading: true });
-      await api.add({ file, name: filename });
+      await api.add({ file, name: filename, duration: timingElapse });
       await refetch();
       this.onDiscard();
       this.setState({ loading: false, showModal: false });
@@ -80,11 +81,14 @@ class App extends Component {
   }
 
   onPlay = () => {
-    const { audioUrl, isRecording } = this.state;
+    const { audioUrl, isPlaying } = this.state;
     const audio = new Audio(audioUrl);
-    if (audio && !isRecording) {
+    if (!isPlaying) {
       this.setState({ isPlaying: true });
       audio.play();
+    } else {
+      this.setState({ isPlaying: false });
+      audio.pause();
     }
   }
 
