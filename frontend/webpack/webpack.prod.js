@@ -92,8 +92,7 @@ module.exports = {
           options: {
             outputStyle: 'expanded',
             import: true,
-            includePaths: ['./src/styles']
-              .map(file => path.join(__dirname, file))
+            includePaths: [path.resolve('./frontend/src/styles')],
           }
         }]
       }, {

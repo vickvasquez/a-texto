@@ -4,6 +4,13 @@
 
   table {
     border-collapse: collapse;
+    thead {
+      background: $lightest-gray;
+      th {
+        padding: .8rem;
+        border: 1px solid #ccc;
+      }
+    }
     td {
       color: #3b3f3b;
       padding: .8rem;
@@ -19,5 +26,11 @@
     img {
       width: 15px;
     }
+  }
+
+  .button-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
 }

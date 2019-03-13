@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import api from '~api';
 
@@ -19,6 +20,10 @@ const initialState = {
 };
 
 class App extends Component {
+  static propTypes = {
+    refetch: PropTypes.func.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,9 +58,12 @@ class App extends Component {
   onSubmit = async (evt) => {
     evt.preventDefault();
     const { file, filename } = this.state;
+    const { refetch } = this.props;
     try {
       this.setState({ loading: true });
       await api.add({ file, name: filename });
+      await refetch();
+      this.onDiscard();
       this.setState({ loading: false, showModal: false });
     } catch (err) {
       this.setState({ loading: false });
@@ -140,8 +148,8 @@ class App extends Component {
         <h2 styleName="time-elapse"> {timingElapse} </h2>
         {file && (
           <div styleName="footer">
-            <button type="button" styleName="button unstyled" onClick={this.onDiscard}> Descartar </button>
-            <button type="button" styleName="button primary" onClick={this.onSave}> Guardar </button>
+            <button type="button" className="button unstyled" onClick={this.onDiscard}> Descartar </button>
+            <button type="button" className="button primary" onClick={this.onSave}> Guardar </button>
           </div>
         )}
         <Animation>
@@ -152,14 +160,14 @@ class App extends Component {
               </ModalHeader>
               <ModalBody>
                 <form onSubmit={this.onSubmit}>
-                  <p styleName="label">Nombre del audio.</p>
+                  <p className="label">Nombre del audio.</p>
                   <input disabled={loading} type="text" name="filename" required="required" onChange={this.onChangeName} />
                 </form>
               </ModalBody>
               <ModalFooter>
-                <div styleName="footer-modal">
-                  <input type="button" styleName="button unstyled" value="Cancelar" onClick={this.onCloseModal} />
-                  <input type="button" styleName="button primary" value="Confirmar" disabled={!filename.length || loading} onClick={this.onSubmit} />
+                <div className="footer-modal">
+                  <input type="button" className="button unstyled" value="Cancelar" onClick={this.onCloseModal} />
+                  <input type="button" className="button primary" value="Confirmar" disabled={!filename.length || loading} onClick={this.onSubmit} />
                 </div>
               </ModalFooter>
             </Modal>

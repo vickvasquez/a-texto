@@ -12,6 +12,10 @@ class App extends Component {
   }
 
   async componentWillMount() {
+    this.getRecordings();
+  }
+
+  getRecordings = async () => {
     try {
       const { data } = await api.getAll();
       this.setState({ data });
@@ -25,9 +29,14 @@ class App extends Component {
     return (
       <div styleName="container">
         <div styleName="container-app">
-          <Add />
-          {data.length && (
-            <Recordings data={data} />
+          <Add
+            refetch={this.getRecordings}
+          />
+          {data.length > 0 && (
+            <Recordings
+              refetch={this.getRecordings}
+              data={data}
+            />
           )}
         </div>
       </div>

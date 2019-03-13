@@ -19,92 +19,90 @@ module.exports = {
   context: path.join(__dirname, '../'),
   module: {
     rules: [{
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules)/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            plugins: [
-              [
-                'react-css-modules',
-                {
-                  filetypes: {
-                    '.scss': {
-                      syntax: 'postcss-scss',
-                    },
+      test: /\.(js|jsx)$/,
+      exclude: /(node_modules)/,
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          plugins: [
+            [
+              'react-css-modules',
+              {
+                filetypes: {
+                  '.scss': {
+                    syntax: 'postcss-scss',
                   },
-                  generateScopedName,
                 },
-              ],
+                generateScopedName,
+              },
             ],
-          },
-        }, {
-          loader: 'eslint-loader',
-        }],
+          ],
+        },
       }, {
-        test: /\.(s?css)$/,
-        use: [{
-          loader: MiniCssExtractPlugin.loader
-        }, {
-          loader: 'css-loader',
-          options: {
-            modules: true,
-            minimize: true,
-            getLocalIdent: (context, localIdentName, localName) =>
-              generateScopedName(localName, context.resourcePath),
-          }
-        }, {
-          loader: 'sass-loader?!css-loader',
-          options: {
-            outputStyle: 'expanded',
-            import: true,
-            includePaths: ['./src/styles']
-              .map(file => path.join(__dirname, file))
-          }
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            plugins: () => [
-              autoprefixer,
-            ],
-          },
-        }]
+        loader: 'eslint-loader',
+      }],
+    }, {
+      test: /\.(s?css)$/,
+      use: [{
+        loader: MiniCssExtractPlugin.loader
       }, {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        loaders: [{
-          loader: 'file-loader',
-          options: {
-            name: 'fonts/[hash].[ext]',
-          },
-        }, ],
+        loader: 'css-loader',
+        options: {
+          modules: true,
+          minimize: true,
+          getLocalIdent: (context, localIdentName, localName) =>
+            generateScopedName(localName, context.resourcePath),
+        }
       }, {
-        test: /.*\.(png|jpe?g|svg)$/i,
-        loaders: [{
-          loader: 'file-loader',
-          options: {
-            name: 'images/[hash].[ext]',
-          },
-        }, {
-          loader: 'image-webpack-loader',
-          options: {
-            pngquant: {
-              quality: '65-90',
-              speed: 4,
-            },
-            mozjpeg: {
-              quality: 60,
-            },
-            bypassOnDebug: true,
-          },
-        }, ],
+        loader: 'sass-loader?!css-loader',
+        options: {
+          outputStyle: 'expanded',
+          data: '@import "variables";',
+          import: true,
+          includePaths: [path.resolve('./frontend/src/styles')],
+        },
       }, {
-        test: /\.gql$/,
-        exclude: /node_modules/,
-        loader: 'graphql-tag/loader',
-      },
-
-    ]
+        loader: 'postcss-loader',
+        options: {
+          plugins: () => [
+            autoprefixer,
+          ],
+        },
+      }]
+    }, {
+      test: /\.(eot|ttf|woff|woff2)$/,
+      loaders: [{
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[hash].[ext]',
+        },
+      }, ],
+    }, {
+      test: /.*\.(png|jpe?g|svg)$/i,
+      loaders: [{
+        loader: 'file-loader',
+        options: {
+          name: 'images/[hash].[ext]',
+        },
+      }, {
+        loader: 'image-webpack-loader',
+        options: {
+          pngquant: {
+            quality: '65-90',
+            speed: 4,
+          },
+          mozjpeg: {
+            quality: 60,
+          },
+          bypassOnDebug: true,
+        },
+      }],
+    }, {
+      test: /\.gql$/,
+      exclude: /node_modules/,
+      loader: 'graphql-tag/loader',
+    }]
   },
   plugins,
   devtool: "inline-source-map",
