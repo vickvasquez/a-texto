@@ -2,8 +2,6 @@ import fs from 'fs-extra';
 import path from 'path';
 import uid from 'uid';
 
-// import { formatError, allowedExtensions } from '../lib/utils';
-
 export const files = async (ctx, next) => {
   const { method, url } = ctx.request;
 
@@ -24,16 +22,7 @@ export const files = async (ctx, next) => {
   const file = ctx.request.files.file || {};
   const ext = file.name && path.extname(file.name);
   const name = ctx.request.body.name;
-  /*if (file.name && !allowedExtensions.includes(ext)) {
-    ctx.status = 400;
-    ctx.body = {
-      status: 'error',
-      errors: formatError({ errors: { id:{ path: 'file', message: 'Formato de archivo incorrecto' } } }),
-      message: 'Sucedió un error desconocido',
-    };
-    return
-  }
-*/
+
   const filePath = path.join(tmpdir, `${name}_${uid(50)}${ext}`);
   const reader = await fs.createReadStream(file.path);
   const writer = await fs.createWriteStream(filePath);

@@ -15,6 +15,6 @@ recordsSchema.statics.add = async function(data) {
   const response = await this.create(data);
 
   return response;
-}
+};
 
 export default mongoose.model('Records', recordsSchema);
