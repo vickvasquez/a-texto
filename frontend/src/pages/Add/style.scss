@@ -1,0 +1,38 @@
+.container-add {
+  text-align: center;
+  position: relative;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 9px 0 rgba(0,0,0,0.05);
+  margin: 0 auto;
+  padding: 2rem 0;
+
+  .header {
+    margin-bottom: 4rem;
+    font-weight: 100;
+    font-size: 18px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+  }
+
+  .time-elapse {
+    color: #676c67;
+    margin-top: 4rem;
+    font-weight: 100;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+  }
+
+  .title-modal {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 22px;
+    position: relative;
+    top: -10px;
+  }
+}
