@@ -1,4 +1,4 @@
-const apiHost = window.apiHost || process.env.API_HOST || 'http://localhost:3001';
+const apiHost = window.apiHost || process.env.API_HOST || 'http://localhost:3000';
 
 const config = {
   apiHost,
