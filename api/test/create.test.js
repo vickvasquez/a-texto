@@ -59,7 +59,7 @@ describe('Add /', () => {
     expect(res.body.errors[0].message).to.equal('Sucedió un error al subir la grabación')
   })
 
-  it('shoud return error if file is invalid', async () => {
+  it.skip('shoud return error if file is invalid', async () => {
     const res = await request(server)
       .post('/api/recordings')
       .set('Content-Type', contentType)

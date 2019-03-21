@@ -16,4 +16,7 @@ services:
       - db
     environment:
       HOST_DB: db
+      NODE_ENV: test
+    tty: true
+    entrypoint: /home/docker/run-test.sh
   
