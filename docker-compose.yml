@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+  api:
+    container_name: api-atexto
+    build:
+      context: api/
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    links:
+      - db
+    environment:
+      HOST_DB: db
+  
