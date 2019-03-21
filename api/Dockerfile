@@ -6,7 +6,9 @@ COPY ./scripts/*.sh /home/docker/
 
 WORKDIR /var/lib/app
 
-RUN chmod -R +x /home/docker/*.sh && npm i --silent
+ENV CI=1
+
+RUN chmod -R +x /home/docker/*.sh && npm ci
 
 EXPOSE 3000
 ENTRYPOINT [ "/home/docker/startup-api.sh" ]

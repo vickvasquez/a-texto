@@ -1,0 +1,15 @@
+services:
+  docker
+
+language: node_js
+node_js: 10.15.0
+
+cache:
+  - node_modules
+  - $HOME/.npm
+
+before_script:
+  - chmod +x ./travis/*.sh
+
+script:
+  - ./travis/travis.sh
